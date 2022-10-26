@@ -136,8 +136,8 @@ def request_tweets(id_list):
             else:
                 # something else went wrong
                 error_count[tw] = error_count.get(tw, 0) + 1
-                if error_count[tw] < 5:
-                    id_list.append(tw) # re add to try only top 5 times
+                if error_count[tw] < 3:
+                    id_list.append(tw) # re add to try only top 3 times
                 sleep_time(5)
 
 
