@@ -98,6 +98,10 @@ def main(args):
                     thread.join()
                 threads = []
 
+                # write current progress in case of crash
+                with open('temp.txt', 'w') as f_out:
+                    json.dump(TWEET_DATA, f_out, indent=4)
+
         # have thread update global variable and merge
         for thread in threads:
             thread.join()
