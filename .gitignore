@@ -1,2 +1,3 @@
 # ignore file with api keys
 secret.py
+__pycache__
