@@ -80,9 +80,8 @@ def sentiment_analysis(text_list, language_list):
         sentiment_sum = 0
         count = 0
         for s in temp:
-            if s != 0:
-                sentiment_sum += s
-                count += 1
+            sentiment_sum += s
+            count += 1
         sentiment.append(0 if count == 0 else sentiment_sum / count)
 
     return sentiment
