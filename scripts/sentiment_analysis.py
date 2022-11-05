@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import re
 import pycountry
+import datetime
 
 #----------
 
@@ -81,7 +82,7 @@ def sentiment_analysis(text_list, language_list):
         count = 0
         for s in temp:
             sentiment_sum += s
-            count += 1
+            count += 1 
         sentiment.append(0 if count == 0 else sentiment_sum / count)
 
     return sentiment
@@ -167,8 +168,9 @@ def main(args):
             data = pd.read_csv(f'{data_folder}{sub_folder}/{f_in}')
             
             # add created_at
-            date = f_in.split('.')[0].split('_')[-1]
-            data['date'] = [None if val is None else date for val in data['text']]
+            date_str = f_in.split('.')[0].split('_')[-1].split('-')
+            date = datetime.date(date_str[0], date_str[1], date_str[2])
+            data['date'] = [date] * len(data['text'])
 
             # calculate sentiment analysis
             data['sentiment'] = sentiment_analysis(data['text'], data['lang'])
