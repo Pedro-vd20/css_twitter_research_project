@@ -1,4 +1,5 @@
 import os
+import datetime
 from os.path import isdir
 import sys
 import json
@@ -11,11 +12,11 @@ import pandas as pd
 
 #----------
 
-TWEET_ATTRIBUTES = ['id', 'created_at', 'text', 'truncated', 'source', 'in_reply_to_status_id', 'in_reply_to_user_id', 'in_reply_to_screen_name', 'geo', 'coordinates', 'place', 'contributors', 'is_quote_status', 'retweet_count', 'favorite_count', 'favorited', 'retweeted', 'possibly_sensitive', 'possibly_sensitive_appealable', 'lang'] 
-USER_ATTRIBUTES = ['id', 'name', 'screen_name', 'location', 'description', 'protected', 'followers_count', 'friends_count', 'listed_count', 'created_at', 'favourites_count', 'utc_offset', 'time_zone', 'geo_enabled', 'verified', 'statuses_count', 'lang', 'contributors_enabled', 'is_translator', 'is_translation_enabled', 'default_profile', 'following', 'follow_request_sent', 'translator_type']
+TWEET_ATTRIBUTES = ['id', 'text', 'lang'] 
+USER_ATTRIBUTES = ['id', 'name', 'location', 'geo_enabled', 'lang']
 # other important field -> ['user']['withheld_in_countries']
 NUM_TWEETS = 1000 # 1000 tweets were collected per day
-NUM_ATTRIBUTES = len(TWEET_ATTRIBUTES) + len(USER_ATTRIBUTES)
+NUM_ATTRIBUTES = len(TWEET_ATTRIBUTES) + len(USER_ATTRIBUTES) + 1 # include place with + 1
 
 #----------
 
@@ -71,19 +72,23 @@ def main(args):
             
             for id, tweet in tweets.items(): # loop through each tweet id
                 # tweet is now a dict with all the values of interest
-                if tweet is None or type(tweet) == str:
+                if tweet is None or isinstance(tweet, str):
                     # append empty row
-                    data.append([id] + ([None] *  (NUM_ATTRIBUTES)))
+                    data.append([id] + ([None] *  (NUM_ATTRIBUTES-1)))
                     continue
                 
                 # collect all the data in the order of the attributes
                 temp = []
                 for attribute in TWEET_ATTRIBUTES:
                     temp.append(tweet.get(attribute, None))
+                
                 for attribute in USER_ATTRIBUTES:
                     temp.append(tweet['user'].get(attribute, None))
-                temp.append(str(tweet['user'].get('withheld_in_countries', None)))
 
+                if tweet.get('place', None) is not None:
+                    temp.append(tweet['place'].get('country', None))
+                else:
+                    temp.append(None)
 
                 # add to data
                 data.append(temp)
@@ -93,11 +98,19 @@ def main(args):
                 os.mkdir(f'{dest_folder}{sub_f}')
 
             # save data into csv file
-            column_names = [col for col in TWEET_ATTRIBUTES] + [f'user_{col}' for col in USER_ATTRIBUTES] + ['user_withheld_in_countries']
+            column_names = [col for col in TWEET_ATTRIBUTES] + [f'user_{col}' for col in USER_ATTRIBUTES] + ['place']
             df = pd.DataFrame(data, columns=column_names)
+
+            # add created_at date
+            date_str = f_in.split('.')[0].split('_')[-1].split('-')
+            date = datetime.date(int(date_str[0]), int(date_str[1]), int(date_str[2]))
+            df['date'] = [date] * len(df['text'])
+
 
             # save to file
             df.to_csv(f'{dest_folder}{sub_f}/{f_in.split(".")[0]}.csv', index=False)
+
+    return 0
             
 
 if __name__ == '__main__': 

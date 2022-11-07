@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import re
 import pycountry
-import datetime
+import ast
 
 #----------
 
@@ -68,22 +68,12 @@ def sentiment_analysis(text_list, language_list):
         text = re.sub(r"@", r"", text)
         text = re.sub(r"http(s).*$", r"", text)
         text = re.sub(r"[^\x00-\x7F]+", r"", text)
-        text = re.sub(r"\t", r"", text)
-        text = re.sub(r"\n", r" ", text)
+        text = re.sub(r"\t", r" ", text)
+        text = re.sub(r"\n", r". ", text)
 
         # run sentiment analysis
         blob = TextBlob(text)
-        temp = []
-        for sentence in blob.sentences:
-            temp.append(sentence.sentiment.polarity)
-
-        # compute average
-        sentiment_sum = 0
-        count = 0
-        for s in temp:
-            sentiment_sum += s
-            count += 1 
-        sentiment.append(0 if count == 0 else sentiment_sum / count)
+        sentiment.append(blob.sentiment.polarity)
 
     return sentiment
 
@@ -100,9 +90,8 @@ def fetch_country(places, user_locs, city_path):
     for place, u_loc in zip(places, user_locs):
         # collect based on place
         if place is not np.nan:
-            place = place.replace("'", '"') # replace ' with " for json
-            place = json.loads(place)
-            countries.append(place['country'])
+            # print(place)
+            countries.append(place)
         elif u_loc is not np.nan:
             # split into words, clean for non-alphabet chars
             sentence = re.sub("[^a-zA-Z ]+", "", u_loc).split(' ')
@@ -111,8 +100,10 @@ def fetch_country(places, user_locs, city_path):
             found = False
             for word in sentence:
                 try:
-                    country = pycountry.countries.search_fuzzy(word)[0]
-                    countries.append(country.name)
+                    country = pycountry.countries.search_fuzzy(word)
+                    if len(country) != 1:
+                        continue
+                    countries.append(country[0].name)
                     found = True
                     break
                 except LookupError:
@@ -165,16 +156,15 @@ def main(args):
         # loop through each file
         for f_in in sorted(os.listdir(f'{data_folder}{sub_folder}')):
             # get file data
-            data = pd.read_csv(f'{data_folder}{sub_folder}/{f_in}')
+            try:
+                data = pd.read_csv(f'{data_folder}{sub_folder}/{f_in}')
+            except pd.errors.ParserError:
+                print(f"Could not read {f_in}")
+                continue
             
-            # add created_at
-            date_str = f_in.split('.')[0].split('_')[-1].split('-')
-            date = datetime.date(date_str[0], date_str[1], date_str[2])
-            data['date'] = [date] * len(data['text'])
-
             # calculate sentiment analysis
             data['sentiment'] = sentiment_analysis(data['text'], data['lang'])
-
+            
             # Attempt to fetch country
             data['country'] = fetch_country(data['place'], data['user_location'], cities_path)
 
@@ -186,6 +176,8 @@ def main(args):
             # save file
             data.to_csv(f'{dest_path}processed_{f_in.split("_")[-1]}', index=False)
 
+
+    print('Sentiment Analysis done!')
     return 0
 
 

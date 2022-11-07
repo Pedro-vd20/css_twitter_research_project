@@ -43,6 +43,50 @@ def check_args(args):
 
     return src_folder, dest_folder, confounders_path
 
+'''
+Helper method for cleaning confounder data
+'''
+def value_to_float(x):
+  if type(x) is float or type(x) is int:
+    return x
+  if 'K' in x:
+    if len(x) > 1:
+      return float(x.replace('K', '')) * 1000
+    return 1000.0
+  if 'M' in x:
+    if len(x) > 1:
+      return float(x.replace('M', '')) * 1000000
+    return 1000000.0
+  if 'B' in x:
+    return float(x.replace('B', '')) * 1000000000
+  return 0.0
+
+'''
+Cleans and evens out format of the dataframe
+'''
+def get_confounders(df_path):
+    df = pd.read_excel(df_path)
+    df.rename(columns={'Country': 'country'}, inplace=True)
+
+    #remove dollar signs 
+    df['Imports'] = df['Imports'].str.replace('$','')
+    df['Exports'] = df['Exports'].str.replace('$','')
+    #and km / miles & commas
+    df['kilometers'] = df['kilometers'].str.replace('km','')
+    df['kilometers'] = df['kilometers'].str.replace(',','')
+    df['miles'] = df['miles'].str.replace('miles','')
+    df['miles'] = df['miles'].str.replace(',','')
+
+    # replace k and m
+    df['Imports'] = df['Imports'].apply(value_to_float)
+    df['Exports'] = df['Exports'].apply(value_to_float)
+    # make floats
+    df['kilometers'] = df['kilometers'].astype(float)
+    df['miles'] = df['miles'].astype(float)
+
+    return df
+
+
 #----------
 
 def main():
@@ -69,6 +113,15 @@ def main():
 
             # calculate aggregate values
             data_aggregate = data[['country', 'sentiment']].groupby('country').mean()
+
+            # get num observations
+            #data_aggregate['country_counts'] = 
+            data_aggregate['country_count'] = data[['country', 'text']].groupby('country').count()['text']
+
+            # print(data_aggregate[['country', 'country_count', 'sentiment']])
+            # print(data_aggregate)
+
+            # return 0
             
             # get date from file
             data_aggregate['date'] = [data['date'].loc[0]] * len(data_aggregate)
@@ -85,15 +138,14 @@ def main():
             # break
         # break
 
-    # load confounder dataset
-    confounders = pd.read_excel(df_path)
-    confounders.rename(columns={'Country': 'country'}, inplace=True)
+    # load and clean confounder dataset
+    confounders = get_confounders(df_path)
 
     # left join
     df_merged = pd.merge(df_merged, confounders, on='country', how='left')
     
     # save data
-    df_merged.to_csv(f'{dest_path}merged_data.csv')
+    df_merged.to_csv(f'{dest_path}merged_data.csv', index=False)
     
     return 0
 
