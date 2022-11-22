@@ -91,7 +91,8 @@ def fetch_country(places, user_locs, city_path):
         # collect based on place
         if place is not np.nan:
             # print(place)
-            countries.append(place)
+            country = pycountry.countries.lookup(place)[0]
+            countries.append(country.name)
         elif u_loc is not np.nan:
             # split into words, clean for non-alphabet chars
             sentence = re.sub("[^a-zA-Z ]+", "", u_loc).split(' ')
@@ -118,7 +119,8 @@ def fetch_country(places, user_locs, city_path):
                     alone can't determine the country so None is put
                     '''
                     if (cities.get(word, None) is not None) and (type(cities[word]) is str):
-                        countries.append(cities[word])
+                        country = pycountry.countries.lookup(cities[word])[0]
+                        countries.append(country.name)
                         found = True
                         break
 
