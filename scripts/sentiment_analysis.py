@@ -1,190 +1,115 @@
-from textblob import TextBlob
-import nltk
-import sys
-import os
+#Sentiment Analysis using VADER from a json file of tweets and outputting to a csv file 
+
 import json
-import pandas as pd
-import numpy as np
-import re
+import csv
+import os
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import pycountry
-import ast
 
-#----------
+#Create a SentimentIntensityAnalyzer object.
+analyser = SentimentIntensityAnalyzer()
 
-'''
-This script goes through the csv files adding data on sentiment analysis, date 
-created, and country created
-'''
+#Open the json file and read it
+tweets = []
+lang = []
+country = []
+for filename in os.listdir('/Users/pavly/Desktop'):
+    if filename.endswith(".json"):
+        with open(filename, 'r') as f:
+            df = [json.loads(line) for line in f]
+            tweets = [tweet['full_text'] for tweet in df]
+            lang = [tweet['lang'] for tweet in df]
+            country_place = [tweet['place'] for tweet in df]
+            user = [tweet['user']['screen_name'] for tweet in df]
+            location = [tweet['user']['location'] for tweet in df]
 
-#----------
+            #get the country from list country
+            country_place = [tweet['country'] for tweet in country if tweet is not None]
 
-NUM_ARGS = 3
+            #get country from location
+            country_location = [tweet.split(',')[-1] for tweet in location if tweet is not None]
+            country_location = [tweet.split(' ')[-1] for tweet in country_location]
 
-#----------
+            #combine the two lists
+            country = country_place + country_location
 
-'''
-Goes through all arguments passed to file
-Checks validity and formats args
-'''
-def check_args(args):
-    # check num args
-    if len(args) < NUM_ARGS + 1:
-        print('Insufficient arguments, expected path to csv, path to cities JSON')
-        raise(IndexError('Need 2 args: path to csv files, path to cities json'))
+            #Attempts to gather country data based on tweet geoloc or user location
+            #country = [tweet['place']['country'] for tweet in df if tweet['place'] is not None]
+            #country = [tweet['user']['location'] for tweet in df if tweet['user']['location'] is not None]
 
-    # extract args
-    src_folder = args[1]
-    dest_folder = args[2]
-    cities_path = args[3]
 
-    # check if other paths exist
-    if not (os.path.isdir(src_folder) and os.path.isfile(cities_path) and os.path.isdir(dest_folder)):
-        print(f"Can't find {src_folder} or {cities_path}")
-        raise(FileNotFoundError(f"Can't find {src_folder} or {cities_path}"))
+
+#Create a csv file to write the results to.
+with open('sentiment.csv', 'w') as csvfile:
+    fieldnames = ['tweet', 'neg', 'neu', 'pos', 'compound'] 
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+    print("CSV File Created")
+
+    #For each tweet in the list, run the sentiment analysis and write the results to the csv file.
+    for tweet in tweets:
+        score = analyser.polarity_scores(tweet)
+        #neg, neu, pos, compound are the keys for the dictionary "score" returned by the sentiment analysis function "polarity_scores"
+        writer.writerow({'tweet': tweet, 'neg': score['neg'], 'neu': score['neu'], 'pos': score['pos'], 'compound': score['compound']}) 
+    print("Sentiment Analysis Complete")
+
+
+#count the number of tweets that are found and the number of tweets that are not found
+count = 0
+not_found = 0
+for tweet in tweets:
+    if tweet != "":
+        count += 1
+    else:
+        not_found += 1
+
+print("Number of tweets found: ", count)
+print("Number of tweets not found: ", not_found)
+
+#count the tweets in english and the tweets in other languages
+count_en = 0
+count_other = 0
+for lang in lang:
+    if lang == "en":
+        count_en += 1
+    else:
+        count_other += 1
+
+print("Number of tweets in English: ", count_en)
+print("Number of tweets in other languages: ", count_other)
+
+#count the number of tweets from per country for ukraine, russia, and other countries
+count_ukr = 0
+count_rus = 0
+count_other = 0
+for country in country:
+    if country == "Ukraine":
+        count_ukr += 1
+    elif country == "Russia":
+        count_rus += 1
+    else:
+        count_other += 1
+
+print("Number of tweets from Ukraine: ", count_ukr)
+print("Number of tweets from Russia: ", count_rus)
+print("Number of tweets from other countries: ", count_other)
+
+#count the number of unique users that tweeted
+unique_users = set(user)
+print("Number of unique users: ", len(unique_users))
+
+
+#save the printed results to csv file called "results.csv"
+with open('results.csv', 'w') as csvfile:
+    fieldnames = ['Number of tweets found', 'Number of tweets not found', 'Number of tweets in English', 'Number of tweets in other languages', 'Number of tweets with no country']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerow({'Number of tweets found': count, 'Number of tweets not found': not_found, 'Number of tweets in English': count_en, 'Number of tweets in other languages': count_other, 'Number of tweets with no country': count_other})
+    print("Results saved to CSV file")
     
-    # format params
-    if src_folder[-1] != '/':
-        src_folder += '/'
-    if dest_folder[-1] != '/':
-        dest_folder += '/'
+#Close the csv file.
+csvfile.close()
 
-    return src_folder, dest_folder, cities_path
-   
-'''
-Cleans text contents of tweets and calculates average sentiment
-Checks if tweet in English
-'''
-def sentiment_analysis(text_list, language_list):
-    sentiment = []
-    for text, lang in zip(text_list, language_list):
-        # None cases
-        if text is None or lang != 'en':
-            sentiment.append(None)
-            continue
-
-        # clean text (remove links, @, #)
-        #text = re.sub('@ | # | http[*]$', '', text)
-        text = re.sub(r"#", r"", text)
-        text = re.sub(r"@", r"", text)
-        text = re.sub(r"http(s).*$", r"", text)
-        text = re.sub(r"[^\x00-\x7F]+", r"", text)
-        text = re.sub(r"\t", r" ", text)
-        text = re.sub(r"\n", r". ", text)
-
-        # run sentiment analysis
-        blob = TextBlob(text)
-        sentiment.append(blob.sentiment.polarity)
-
-    return sentiment
-
-'''
-Attempts to gather country data based on tweet geoloc or user location
-'''
-def fetch_country(places, user_locs, city_path):
-    # load city info
-    with open(city_path, 'r') as in_f:
-        cities = json.load(in_f)
-
-    countries = []
-
-    for place, u_loc in zip(places, user_locs):
-        # collect based on place
-        if place is not np.nan:
-            # print(place)
-            country = pycountry.countries.lookup(place)[0]
-            countries.append(country.name)
-        elif u_loc is not np.nan:
-            # split into words, clean for non-alphabet chars
-            sentence = re.sub("[^a-zA-Z ]+", "", u_loc).split(' ')
-
-            # search each for country name
-            found = False
-            for word in sentence:
-                try:
-                    country = pycountry.countries.search_fuzzy(word)
-                    if len(country) != 1:
-                        continue
-                    countries.append(country[0].name)
-                    found = True
-                    break
-                except LookupError:
-                    continue
-            
-            # search by city
-            if not found:
-                for word in sentence:
-                    '''
-                    Must check if cities[word] is a string. For cities that map 
-                    to many countries (ie London, Canada and London, UK), city
-                    alone can't determine the country so None is put
-                    '''
-                    if (cities.get(word, None) is not None) and (type(cities[word]) is str):
-                        country = pycountry.countries.lookup(cities[word])[0]
-                        countries.append(country.name)
-                        found = True
-                        break
-
-            # not found -> append none
-            if not found:
-                countries.append(None)
-
-        # both data points are None
-        else:
-            countries.append(None)
-
-    return countries
-
-#----------
-
-def main(args):
-    # check args
-    data_folder, dest_folder, cities_path = check_args(args)
-
-    # set up nltk
-    nltk.download('punkt')
-
-    # loop through folders
-    for sub_folder in sorted(os.listdir(data_folder)):
-        '''
-        Expected file struct
-            data_folder/
-            |   sub_folder/
-            |   |   data1.csv
-            |   |   data2.csv
-            |   |   ...
-            |   sub_folder2/
-            |   ...
-        '''
-        # loop through each file
-        for f_in in sorted(os.listdir(f'{data_folder}{sub_folder}')):
-            # get file data
-            try:
-                data = pd.read_csv(f'{data_folder}{sub_folder}/{f_in}')
-            except pd.errors.ParserError:
-                print(f"Could not read {f_in}")
-                continue
-            
-            # calculate sentiment analysis
-            data['sentiment'] = sentiment_analysis(data['text'], data['lang'])
-            
-            # Attempt to fetch country
-            data['country'] = fetch_country(data['place'], data['user_location'], cities_path)
-
-            # get dest path to save csv
-            dest_path = f'{dest_folder}{sub_folder}/'
-            if not os.path.isdir(dest_path):
-                os.mkdir(dest_path)
-
-            # save file
-            data.to_csv(f'{dest_path}processed_{f_in.split("_")[-1]}', index=False)
-
-
-    print('Sentiment Analysis done!')
-    return 0
-
-
-
-
-if __name__ == '__main__':
-    main(sys.argv)
+#Close the json file.
+f.close()
 
