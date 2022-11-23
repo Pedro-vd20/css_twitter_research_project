@@ -1,10 +1,8 @@
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import sys
-import os
 import json
-import pandas as pd
-import numpy as np
-import re
+import csv
+import os
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import pycountry
 import ast
 import csv
