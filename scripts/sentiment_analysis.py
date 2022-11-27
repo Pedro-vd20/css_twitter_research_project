@@ -8,6 +8,7 @@ import re
 import pycountry
 import ast
 import csv
+import random
 
 #----------
 
@@ -65,7 +66,7 @@ def sentiment_analysis(text_list):
 
     for text in text_list:
         # None cases
-        if text is None:
+        if text is None or (not isinstance(text, str)):
             no_sentiment += 1
             for key in sentiment:
                 sentiment[key].append(None)
@@ -101,11 +102,14 @@ def fetch_country(places, user_locs, city_path):
 
     for place, u_loc in zip(places, user_locs):
         # collect based on place
-        if place is not np.nan:
+        if (place is not np.nan) and isinstance(place, str):
             # print(place)
-            country = pycountry.countries.search_fuzzy(place)[0]
-            countries.append(country.name)
-        elif u_loc is not np.nan:
+            try:
+                country = pycountry.countries.lookup(place)
+                countries.append(country.name)
+            except LookupError:
+                countries.append(None)
+        elif u_loc is not np.nan and isinstance(u_loc, str):
             # split into words, clean for non-alphabet chars
             sentence = re.sub("[^a-zA-Z ]+", "", u_loc)
 
@@ -148,7 +152,14 @@ def main(args):
     stats = {'total': 0, 'no_country': 0, 'no_sentiment': 0}
 
     # loop through each file
-    for csv_file in sorted(os.listdir(data_folder)):
+    files_list = os.listdir(data_folder)
+    random.shuffle(files_list)
+    for csv_file in files_list:
+        if os.path.isfile(f'{dest_folder}processed_{csv_file}'):
+            continue
+        else:
+            os.system(f'touch {dest_folder}processed_{csv_file}')
+
         # get file data
         try:
             data = pd.read_csv(f'{data_folder}{csv_file}')
@@ -170,7 +181,7 @@ def main(args):
             data = pd.DataFrame(data_vals, columns=cols)
 
             
-            # raise(e)
+            # raise(e) 
         
         # compute totals
         stats['total'] += len(data)
@@ -187,18 +198,21 @@ def main(args):
         stats['no_country'] += no_count
 
         # save file
-        data.to_csv(f'{dest_folder}processed_{f_in.split("_")[-1]}', index=False)
+        data.to_csv(f'{dest_folder}processed_{csv_file}', index=False)
 
-        break
-    exit(0)
     print('Sentiment Analysis done!')
-
-    # save stats
+    '''
+    # save stats -> will be done later
     with open(output, 'r') as in_f:
         out_stats = json.load(in_f)
-    out_stats['sentiment'] = stats
     with open(output, 'w') as out_f:
+        if out_stats.get('sentiment', None) is None:
+            out_stats['sentiment'] = stats
+        else:
+            for key in out_stats['sentiment']:
+                out_stats['sentiment'][key] += stats[key]
         json.dump(out_stats, out_f, indent=4)
+    '''
 
 
     return 0

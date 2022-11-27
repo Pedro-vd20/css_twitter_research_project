@@ -11,7 +11,7 @@ Merges data into single csv
 
 #----------
 
-NUM_ARGS = 3
+NUM_ARGS = 2
 
 #----------
 
@@ -28,12 +28,10 @@ def check_args(args):
     # extract args
     src_folder = args[1]
     dest_folder = args[2]
-    confounders_path = args[3]
-
+    
     # check if other paths exist
-    if not (os.path.isdir(src_folder) and os.path.isfile(confounders_path) and os.path.isdir(dest_folder)):
-        print(f"Can't find {src_folder} or {confounders_path} or {dest_folder}")
-        raise(FileNotFoundError(f"Can't find {src_folder} or {confounders_path}"))
+    if not (os.path.isdir(src_folder) and os.path.isdir(dest_folder)):
+        raise(FileNotFoundError(f"Can't find {src_folder} or {dest_folder}"))
     
     # format params
     if src_folder[-1] != '/':
@@ -41,111 +39,42 @@ def check_args(args):
     if dest_folder[-1] != '/':
         dest_folder += '/'
 
-    return src_folder, dest_folder, confounders_path
+    return src_folder, dest_folder
+
 
 '''
-Helper method for cleaning confounder data
+Collects a csv file using pandas
+Cleans unwanted values
 '''
-def value_to_float(x):
-  if type(x) is float or type(x) is int:
-    return x
-  if 'K' in x:
-    if len(x) > 1:
-      return float(x.replace('K', '')) * 1000
-    return 1000.0
-  if 'M' in x:
-    if len(x) > 1:
-      return float(x.replace('M', '')) * 1000000
-    return 1000000.0
-  if 'B' in x:
-    return float(x.replace('B', '')) * 1000000000
-  return 0.0
+def clean_file(path):
+  data = pd.read_csv(path)
 
-'''
-Cleans and evens out format of the dataframe
-'''
-def get_confounders(df_path):
-    df = pd.read_excel(df_path)
-    df.rename(columns={'Country': 'country'}, inplace=True)
+  # remove unwanted data
+  data = data[data['country'].notna()] # remove where no country
 
-    #remove dollar signs 
-    df['Imports'] = df['Imports'].str.replace('$','')
-    df['Exports'] = df['Exports'].str.replace('$','')
-    #and km / miles & commas
-    df['kilometers'] = df['kilometers'].str.replace('km','')
-    df['kilometers'] = df['kilometers'].str.replace(',','')
-    df['miles'] = df['miles'].str.replace('miles','')
-    df['miles'] = df['miles'].str.replace(',','')
-
-    # replace k and m
-    df['Imports'] = df['Imports'].apply(value_to_float)
-    df['Exports'] = df['Exports'].apply(value_to_float)
-    # make floats
-    df['kilometers'] = df['kilometers'].astype(float)
-    df['miles'] = df['miles'].astype(float)
-
-    return df
+  return data
 
 
 #----------
 
 def main():
-    data_path, dest_path, df_path = check_args(sys.argv)
+    data_path, dest_path = check_args(sys.argv)
 
-    df_merged = pd.DataFrame({'country': [], 'date': [], 'sentiment': []})    
+    files = sorted(os.listdir(data_path))
 
-    # loop through each folder in data_path
-    for sub_folder in sorted(os.listdir(data_path)):
-        '''
-        Expected file struct
-            data_folder/
-            |   sub_folder/
-            |   |   data1.csv
-            |   |   data2.csv
-            |   |   ...
-            |   sub_folder2/
-            |   ...
-        ''' 
-        # loop through each file
-        for in_f in sorted(os.listdir(f'{data_path}{sub_folder}')):
-            # load csv
-            data = pd.read_csv(f'{data_path}{sub_folder}/{in_f}')
+    # collect first dataframe
+    merged = clean_file(f'{data_path}{files[0]}')
 
-            # calculate aggregate values
-            data_aggregate = data[['country', 'sentiment']].groupby('country').mean()
+    for csv_file in files[1:]:
+      
+        # collect file
+        data = clean_file(f'{data_path}{csv_file}')
 
-            # get num observations
-            #data_aggregate['country_counts'] = 
-            data_aggregate['country_count'] = data[['country', 'text']].groupby('country').count()['text']
-
-            # print(data_aggregate[['country', 'country_count', 'sentiment']])
-            # print(data_aggregate)
-
-            # return 0
-            
-            # get date from file
-            data_aggregate['date'] = [data['date'].loc[0]] * len(data_aggregate)
-
-            # get country column
-            data_aggregate['country'] = data_aggregate.index
-            # data_aggregate.reset_index()
-            data_aggregate = data_aggregate[['country', 'date', 'sentiment']]
-
-            # merge
-            # df_merged = df_merged.append(data_aggregate, ignore_index=True)
-            df_merged = pd.concat([df_merged, data_aggregate], axis=0, ignore_index=True)
-
-            # break
-        # break
-
-    # load and clean confounder dataset
-    confounders = get_confounders(df_path)
-
-    # left join
-    df_merged = pd.merge(df_merged, confounders, on='country', how='left')
+        # merge data
+        merged = pd.concat([merged, data], axis=0, ignore_index=True)
     
     # save data
-    df_merged.to_csv(f'{dest_path}merged_data.csv', index=False)
+    merged.to_csv(f'{dest_path}merged_data.csv', index=False)
     
     return 0
 

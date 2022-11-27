@@ -1,0 +1,1004 @@
+{
+    "countries": 249,
+    "data_per_country": {
+        "India": [
+            231571,
+            176056
+        ],
+        "Czechia": [
+            24474,
+            17957
+        ],
+        "France": [
+            235449,
+            169104
+        ],
+        "United Kingdom": [
+            2010577,
+            1444893
+        ],
+        "Malaysia": [
+            24318,
+            19267
+        ],
+        "United States": [
+            1642087,
+            992091
+        ],
+        "Japan": [
+            66373,
+            46660
+        ],
+        "Cayman Islands": [
+            2701,
+            1753
+        ],
+        "Kenya": [
+            40942,
+            29399
+        ],
+        "Bosnia and Herzegovina": [
+            3952,
+            3395
+        ],
+        "Costa Rica": [
+            18126,
+            12645
+        ],
+        "Uganda": [
+            124881,
+            80200
+        ],
+        "Bahamas": [
+            4540,
+            3428
+        ],
+        "Norway": [
+            22136,
+            14458
+        ],
+        "Philippines": [
+            32933,
+            24236
+        ],
+        "Turkey": [
+            48116,
+            39689
+        ],
+        "Ecuador": [
+            15745,
+            11854
+        ],
+        "Dominican Republic": [
+            9467,
+            7120
+        ],
+        "Saudi Arabia": [
+            6873,
+            5444
+        ],
+        "Peru": [
+            15656,
+            12208
+        ],
+        "Bangladesh": [
+            12163,
+            9126
+        ],
+        "China": [
+            11065,
+            7952
+        ],
+        "Sweden": [
+            41197,
+            26572
+        ],
+        "Nicaragua": [
+            7839,
+            5974
+        ],
+        "Cambodia": [
+            2478,
+            1763
+        ],
+        "Indonesia": [
+            27972,
+            21909
+        ],
+        "Romania": [
+            13196,
+            8583
+        ],
+        "Panama": [
+            20928,
+            13527
+        ],
+        "Canada": [
+            191361,
+            122087
+        ],
+        "Georgia": [
+            18562,
+            12433
+        ],
+        "Ukraine": [
+            149204,
+            85895
+        ],
+        "Nigeria": [
+            71440,
+            55018
+        ],
+        "Italy": [
+            166040,
+            111817
+        ],
+        "El Salvador": [
+            8525,
+            6732
+        ],
+        "Venezuela, Bolivarian Republic of": [
+            91090,
+            62075
+        ],
+        "Mexico": [
+            34659,
+            27067
+        ],
+        "Finland": [
+            49179,
+            32451
+        ],
+        "Latvia": [
+            23471,
+            13939
+        ],
+        "South Africa": [
+            63126,
+            46487
+        ],
+        "Switzerland": [
+            26151,
+            17185
+        ],
+        "Thailand": [
+            25364,
+            20775
+        ],
+        "Singapore": [
+            20292,
+            15207
+        ],
+        "Spain": [
+            131278,
+            102182
+        ],
+        "Netherlands": [
+            56296,
+            37939
+        ],
+        "Uruguay": [
+            5625,
+            4712
+        ],
+        "Israel": [
+            16991,
+            11997
+        ],
+        "American Samoa": [
+            20899,
+            11307
+        ],
+        "Brazil": [
+            34523,
+            27704
+        ],
+        "Iceland": [
+            13095,
+            8328
+        ],
+        "Seychelles": [
+            4131,
+            2696
+        ],
+        "Azerbaijan": [
+            14310,
+            9645
+        ],
+        "Germany": [
+            154457,
+            110224
+        ],
+        "Honduras": [
+            3612,
+            2932
+        ],
+        "New Zealand": [
+            22184,
+            13787
+        ],
+        "Puerto Rico": [
+            7547,
+            4951
+        ],
+        "Colombia": [
+            33997,
+            26554
+        ],
+        "Sint Maarten (Dutch part)": [
+            473,
+            350
+        ],
+        "Australia": [
+            92937,
+            60372
+        ],
+        "Lebanon": [
+            6463,
+            4208
+        ],
+        "Slovenia": [
+            27180,
+            18111
+        ],
+        "Antarctica": [
+            5801,
+            3757
+        ],
+        "Marshall Islands": [
+            44699,
+            32724
+        ],
+        "Kuwait": [
+            2407,
+            1811
+        ],
+        "Sri Lanka": [
+            4942,
+            3916
+        ],
+        "Pakistan": [
+            36815,
+            26921
+        ],
+        "Hong Kong": [
+            31601,
+            19510
+        ],
+        "Barbados": [
+            1767,
+            1457
+        ],
+        "Greece": [
+            23216,
+            16918
+        ],
+        "Liberia": [
+            10258,
+            6815
+        ],
+        "Taiwan, Province of China": [
+            10284,
+            7873
+        ],
+        "Belgium": [
+            31140,
+            23221
+        ],
+        "Korea, Democratic People's Republic of": [
+            3031,
+            2404
+        ],
+        "Afghanistan": [
+            3455,
+            2657
+        ],
+        "Denmark": [
+            21571,
+            15300
+        ],
+        "Jersey": [
+            1805,
+            1558
+        ],
+        "Cuba": [
+            8373,
+            5843
+        ],
+        "Iran, Islamic Republic of": [
+            6956,
+            4981
+        ],
+        "Jamaica": [
+            11983,
+            9072
+        ],
+        "Bolivia, Plurinational State of": [
+            4036,
+            2875
+        ],
+        "Moldova, Republic of": [
+            3469,
+            2628
+        ],
+        "Maldives": [
+            5344,
+            4024
+        ],
+        "Mali": [
+            4874,
+            2632
+        ],
+        "Poland": [
+            46838,
+            32519
+        ],
+        "Argentina": [
+            45538,
+            36435
+        ],
+        "United Arab Emirates": [
+            6821,
+            5141
+        ],
+        "Sierra Leone": [
+            2511,
+            1759
+        ],
+        "Saint Kitts and Nevis": [
+            1783,
+            1317
+        ],
+        "Mongolia": [
+            8306,
+            6212
+        ],
+        "Austria": [
+            18978,
+            14286
+        ],
+        "Chile": [
+            26936,
+            21265
+        ],
+        "Russian Federation": [
+            13896,
+            9916
+        ],
+        "Guatemala": [
+            8014,
+            6437
+        ],
+        "Botswana": [
+            5422,
+            3815
+        ],
+        "Antigua and Barbuda": [
+            657,
+            518
+        ],
+        "Lao People's Democratic Republic": [
+            4513,
+            3226
+        ],
+        "Cameroon": [
+            6591,
+            4641
+        ],
+        "Eswatini": [
+            475,
+            393
+        ],
+        "Jordan": [
+            2803,
+            2288
+        ],
+        "Nepal": [
+            4604,
+            3578
+        ],
+        "Albania": [
+            2953,
+            2333
+        ],
+        "Kazakhstan": [
+            3927,
+            2934
+        ],
+        "Nauru": [
+            56,
+            48
+        ],
+        "Sao Tome and Principe": [
+            270,
+            225
+        ],
+        "Kyrgyzstan": [
+            1489,
+            1178
+        ],
+        "Tunisia": [
+            4551,
+            3225
+        ],
+        "Qatar": [
+            2306,
+            1706
+        ],
+        "Ireland": [
+            57994,
+            43575
+        ],
+        "Sudan": [
+            1997,
+            1555
+        ],
+        "Estonia": [
+            18489,
+            9489
+        ],
+        "Bulgaria": [
+            9346,
+            6738
+        ],
+        "Burkina Faso": [
+            2257,
+            1716
+        ],
+        "Morocco": [
+            7303,
+            4735
+        ],
+        "Monaco": [
+            3816,
+            2386
+        ],
+        "Greenland": [
+            1859,
+            628
+        ],
+        "Oman": [
+            765,
+            644
+        ],
+        "Tanzania, United Republic of": [
+            9207,
+            6252
+        ],
+        "Egypt": [
+            3343,
+            2780
+        ],
+        "Solomon Islands": [
+            1355,
+            944
+        ],
+        "Myanmar": [
+            3089,
+            2316
+        ],
+        "Saint Helena, Ascension and Tristan da Cunha": [
+            631,
+            567
+        ],
+        "Ghana": [
+            11107,
+            8628
+        ],
+        "Andorra": [
+            1083,
+            902
+        ],
+        "Tajikistan": [
+            214,
+            191
+        ],
+        "Cyprus": [
+            5324,
+            3819
+        ],
+        "Djibouti": [
+            821,
+            496
+        ],
+        "Belize": [
+            736,
+            627
+        ],
+        "Trinidad and Tobago": [
+            3669,
+            2824
+        ],
+        "South Sudan": [
+            2086,
+            1553
+        ],
+        "Viet Nam": [
+            5219,
+            3612
+        ],
+        "Namibia": [
+            2549,
+            2076
+        ],
+        "Serbia": [
+            10623,
+            8457
+        ],
+        "Malta": [
+            5290,
+            3413
+        ],
+        "Slovakia": [
+            6419,
+            4447
+        ],
+        "Eritrea": [
+            1459,
+            1287
+        ],
+        "Gabon": [
+            2559,
+            1694
+        ],
+        "Somalia": [
+            2740,
+            2086
+        ],
+        "Portugal": [
+            35589,
+            25476
+        ],
+        "Cabo Verde": [
+            6465,
+            4656
+        ],
+        "Tonga": [
+            948,
+            675
+        ],
+        "Uzbekistan": [
+            2068,
+            1390
+        ],
+        "Zimbabwe": [
+            6249,
+            4563
+        ],
+        "Central African Republic": [
+            665,
+            527
+        ],
+        "Fiji": [
+            1175,
+            949
+        ],
+        "Burundi": [
+            1036,
+            800
+        ],
+        "Kiribati": [
+            3498,
+            2116
+        ],
+        "Guam": [
+            570,
+            367
+        ],
+        "British Indian Ocean Territory": [
+            830,
+            703
+        ],
+        "Papua New Guinea": [
+            1765,
+            1266
+        ],
+        "Korea, Republic of": [
+            3529,
+            2695
+        ],
+        "United States Minor Outlying Islands": [
+            1784,
+            1137
+        ],
+        "Rwanda": [
+            2105,
+            1796
+        ],
+        "Guinea": [
+            1035,
+            908
+        ],
+        "Niger": [
+            823,
+            634
+        ],
+        "Paraguay": [
+            4909,
+            4186
+        ],
+        "Lithuania": [
+            8235,
+            5425
+        ],
+        "South Georgia and the South Sandwich Islands": [
+            2442,
+            1281
+        ],
+        "Madagascar": [
+            1418,
+            1103
+        ],
+        "R\u00e9union": [
+            10803,
+            6188
+        ],
+        "Senegal": [
+            3522,
+            3136
+        ],
+        "Croatia": [
+            7001,
+            4788
+        ],
+        "Palestine, State of": [
+            4885,
+            3351
+        ],
+        "Hungary": [
+            4522,
+            3271
+        ],
+        "Luxembourg": [
+            6493,
+            4814
+        ],
+        "Virgin Islands, British": [
+            545,
+            301
+        ],
+        "Congo, The Democratic Republic of the": [
+            2110,
+            1692
+        ],
+        "Benin": [
+            2994,
+            2138
+        ],
+        "Lesotho": [
+            2216,
+            1266
+        ],
+        "Belarus": [
+            2117,
+            1575
+        ],
+        "Saint Vincent and the Grenadines": [
+            483,
+            430
+        ],
+        "Mauritania": [
+            666,
+            580
+        ],
+        "Faroe Islands": [
+            279,
+            224
+        ],
+        "Palau": [
+            395,
+            294
+        ],
+        "Angola": [
+            1649,
+            1400
+        ],
+        "Mauritius": [
+            1514,
+            1166
+        ],
+        "Malawi": [
+            1758,
+            1473
+        ],
+        "Brunei Darussalam": [
+            708,
+            587
+        ],
+        "Bahrain": [
+            2236,
+            1657
+        ],
+        "Ethiopia": [
+            4900,
+            3375
+        ],
+        "Isle of Man": [
+            1753,
+            1061
+        ],
+        "Western Sahara": [
+            626,
+            548
+        ],
+        "Timor-Leste": [
+            186,
+            170
+        ],
+        "Haiti": [
+            2752,
+            2141
+        ],
+        "Dominica": [
+            700,
+            553
+        ],
+        "Mozambique": [
+            2192,
+            1451
+        ],
+        "Comoros": [
+            1059,
+            622
+        ],
+        "Libya": [
+            968,
+            754
+        ],
+        "Virgin Islands, U.S.": [
+            720,
+            397
+        ],
+        "Montenegro": [
+            2551,
+            2167
+        ],
+        "Guyana": [
+            1016,
+            433
+        ],
+        "Aruba": [
+            857,
+            428
+        ],
+        "Vanuatu": [
+            158,
+            133
+        ],
+        "Syrian Arab Republic": [
+            2377,
+            1666
+        ],
+        "Samoa": [
+            229,
+            176
+        ],
+        "Equatorial Guinea": [
+            409,
+            339
+        ],
+        "Northern Mariana Islands": [
+            1527,
+            1306
+        ],
+        "San Marino": [
+            256,
+            226
+        ],
+        "Turks and Caicos Islands": [
+            524,
+            447
+        ],
+        "Zambia": [
+            1076,
+            1000
+        ],
+        "Liechtenstein": [
+            353,
+            311
+        ],
+        "Iraq": [
+            3385,
+            2255
+        ],
+        "Algeria": [
+            3213,
+            2283
+        ],
+        "North Macedonia": [
+            3072,
+            2475
+        ],
+        "Saint Lucia": [
+            505,
+            440
+        ],
+        "Montserrat": [
+            495,
+            384
+        ],
+        "Bhutan": [
+            337,
+            303
+        ],
+        "Togo": [
+            296,
+            227
+        ],
+        "Yemen": [
+            1830,
+            1415
+        ],
+        "Congo": [
+            844,
+            622
+        ],
+        "French Polynesia": [
+            121,
+            108
+        ],
+        "Falkland Islands (Malvinas)": [
+            642,
+            501
+        ],
+        "Tuvalu": [
+            207,
+            181
+        ],
+        "Holy See (Vatican City State)": [
+            724,
+            532
+        ],
+        "Turkmenistan": [
+            163,
+            145
+        ],
+        "Armenia": [
+            2219,
+            1676
+        ],
+        "Cocos (Keeling) Islands": [
+            121,
+            79
+        ],
+        "Cook Islands": [
+            656,
+            492
+        ],
+        "Suriname": [
+            461,
+            411
+        ],
+        "Guernsey": [
+            1014,
+            800
+        ],
+        "Gibraltar": [
+            1215,
+            912
+        ],
+        "Norfolk Island": [
+            170,
+            138
+        ],
+        "Mayotte": [
+            498,
+            465
+        ],
+        "Guinea-Bissau": [
+            127,
+            119
+        ],
+        "C\u00f4te d'Ivoire": [
+            1317,
+            1046
+        ],
+        "Micronesia, Federated States of": [
+            150,
+            114
+        ],
+        "Anguilla": [
+            110,
+            87
+        ],
+        "Bermuda": [
+            589,
+            475
+        ],
+        "Pitcairn": [
+            52,
+            47
+        ],
+        "New Caledonia": [
+            445,
+            378
+        ],
+        "Gambia": [
+            520,
+            417
+        ],
+        "Wallis and Futuna": [
+            173,
+            156
+        ],
+        "Saint Barth\u00e9lemy": [
+            456,
+            371
+        ],
+        "Christmas Island": [
+            443,
+            319
+        ],
+        "Tokelau": [
+            38,
+            30
+        ],
+        "Svalbard and Jan Mayen": [
+            106,
+            86
+        ],
+        "Heard Island and McDonald Islands": [
+            57,
+            55
+        ],
+        "Macao": [
+            229,
+            204
+        ],
+        "Guadeloupe": [
+            92,
+            88
+        ],
+        "Grenada": [
+            126,
+            112
+        ],
+        "Chad": [
+            413,
+            344
+        ],
+        "Cura\u00e7ao": [
+            33,
+            28
+        ],
+        "French Guiana": [
+            44,
+            41
+        ],
+        "Bouvet Island": [
+            36,
+            36
+        ],
+        "Niue": [
+            25,
+            24
+        ],
+        "Bonaire, Sint Eustatius and Saba": [
+            126,
+            109
+        ],
+        "\u00c5land Islands": [
+            29,
+            27
+        ],
+        "Saint Pierre and Miquelon": [
+            97,
+            84
+        ],
+        "Martinique": [
+            78,
+            71
+        ],
+        "Saint Martin (French part)": [
+            22,
+            21
+        ],
+        "French Southern Territories": [
+            10,
+            10
+        ]
+    },
+    "no_sentiment": 2239113,
+    "no_country": 40768348,
+    "intersection": 2239113
+}
